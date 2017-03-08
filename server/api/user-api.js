@@ -1,80 +1,111 @@
-const pg = require('pg');
 const path = require('path');
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/health_assist';
-var promise = require('bluebird');
-var pgp = require('pg-promise')({
+const promise = require('bluebird');
+const pgp = require('pg-promise')({
     promiseLib: promise
 });
-var db = pgp(connectionString);
+const db = pgp(connectionString);
 
 function retrieveUsers(req, res, next) {
-   /* const results = [];
-    // Get a Postgres client from the connection pool
-    pg.connect(connectionString, (err, client, done) => {
-        // Handle connection errors
-        if(err) {
-            done();
-            console.log(err);
-            return res.status(500).json({success: false, data: err});
-        }
-        // SQL Query > Select Data
-        const query = client.query('SELECT * FROM user_table ORDER BY ID ASC;');
-        // Stream results back one row at a time
-        query.on('row', (row) => {
-            results.push(row);
-        });
-        // After all data is returned, close connection and return results
-        query.on('end', () => {
-            done();
-            return res.json(results);
-        });
-    });*/
-    db.any('select * from user_table')
-      .then(function (data) {
-          res.status(200)
-             .json({
+
+    db
+        .any('select * from user_table')
+        .then(function (data) {
+            res.status(200)
+               .json({
                  status: 'success',
                  data: data,
-                 message: 'Retrieved ALL puppies'
-             });
-      })
-      .catch(function (err) {
-          return next(err);
-      });
+                 message: 'Retrieved ALL users'
+               });
+        })
+        .catch(function (err) {
+            return next(err);
+        })
+    ;
+}
+
+function getUser(req, res, next) {
+
+    var id = parseInt(req.params.id);
+    db
+        .any('select * from user_table where id = $1',id)
+        .then(function (data) {
+            res.status(200)
+               .json({
+                 status: 'success',
+                 data: data,
+                 message: 'Retrieved one user' + id
+               });
+        })
+        .catch(function (err) {
+            return next(err);
+        })
+    ;
 }
 
 function createUser(req, res, next) {
-    const results = [];
-    // Grab data from http request
+
     const data = {name: req.body.name, email: req.body.email};
-    // Get a Postgres client from the connection pool
-    pg.connect(connectionString, (err, client, done) => {
-        // Handle connection errors
-        if(err) {
-            done();
-            console.log(err);
-            return res.status(500).json({success: false, data: err});
-        }
-        // SQL Query > Insert Data
-        client.query('INSERT INTO user_table(name, email) values($1, $2)',
-            [data.name, data.email]);
-        // SQL Query > Select Data
-        const query = client.query('SELECT * FROM user_table ORDER BY ID ASC');
-        // Stream results back one row at a time
-        query.on('row', (row) => {
-            results.push(row);
-        });
-        // After all data is returned, close connection and return results
-        query.on('end', () => {
-            done();
-            return res.json(results);
-        });
-    });
+
+    db
+        .none('INSERT INTO user_table(name, email) values($1, $2)',
+            [data.name, data.email])
+        .then(function(){
+            res.status(200)
+                .json({
+                    status: 'success',
+                    message: 'created user'
+                });
+        })
+        .catch(function(err){
+            return next(err);
+        })
+    ;
 }
 
+function updateUser(req, res, next) {
+
+    const data = {id: req.body.id, name: req.body.name, email: req.body.email};
+
+    db
+        .none('UPDATE user_table SET name=$1, email=$2 WHERE id=$3',
+            [data.name, data.email, data.id])
+        .then(function(){
+            res.status(200)
+               .json({
+                   status: 'success',
+                   message: 'updated user' + data.id
+               });
+        })
+        .catch(function(err){
+            return next(err);
+        })
+    ;
+}
+
+function deleteUser(req, res, next) {
+
+    var id = parseInt(req.params.id);
+    db
+        .result('DELETE  from user_table where id = $1',id)
+        .then(function () {
+            res.status(200)
+               .json({
+                   status: 'success',
+                   message: 'Deleted one user ' + id
+               });
+        })
+        .catch(function (err) {
+            return next(err);
+        })
+    ;
+}
 
 
 module.exports = {
     retrieveUsers: retrieveUsers,
-    createUser: createUser
+    createUser: createUser,
+    getUser: getUser,
+    updateUser: updateUser,
+    deleteUser: deleteUser
 };
