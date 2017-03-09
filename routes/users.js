@@ -1,6 +1,6 @@
 const express = require('express');
 const user = express.Router();
-const userAPI = require('../server/api/user-api');
+const userAPI = require('./user-api');
 
 /* GET users */
 user.get('/api/v1/users', userAPI.retrieveUsers);
