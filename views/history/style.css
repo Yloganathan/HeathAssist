@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css?family=Baloo+Bhaina');
+
+body {
+  font-family: 'Baloo Bhaina', cursive;
+}
+
+h1 {
+  text-align: center;
+  color: #177E89;
+  font-size: 100px;
+  font-weight: lighter;
+  margin: 0;
+  margin-top: 20px;
+}
+
+main {
+  width: 100%;
+  height: 100vh;
+  background: #177E89;
+}
+
+#nav-menu {
+  display: flex;
+  width: 90%;
+  list-style: none;
+  font-size: 36px;
+  color: #FFFFFF;
+  align-items: center;
+  justify-content: center;
+  padding-top: 50px;
+}
+
+#nav-menu li {
+  width: 25%;
+  text-align: center;
+}
+
+.nav-img {
+  width: 45%;
+  height: 110px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #FFFFFF;
+}
+
+#chart {
+  height: 60vh;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 2%;
+}
+
+#logo {
+  width: 250px;
+}
