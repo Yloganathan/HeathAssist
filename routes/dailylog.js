@@ -1,6 +1,6 @@
 const express = require('express');
 const logs = express.Router();
-const logAPI = require('./dailylog-api');
+const logAPI = require('../server/api/dailylog-api');
 
 /* GET logs for a user */
 logs.get('/api/v1/logs/:userid', logAPI.retrieveLogsforUser);
