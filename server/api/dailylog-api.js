@@ -56,9 +56,11 @@ function retrieveLogsforUser(req, res, next) {
     ;
 }
 
-//TODO: check if the user exists before inserting the foreign key
-//TODO: avoid duplicate entries
+// TODO: check if the user exists before inserting the foreign key
+// TODO: avoid duplicate entries
 // TODO: error handling
+// TODO: Diagnostics
+// TODO: Make it DRY, abstract sql
 function addLogforUser(req, res, next) {
     const userid = parseInt(req.params.userid);
 
