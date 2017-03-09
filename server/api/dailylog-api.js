@@ -55,12 +55,15 @@ function retrieveLogsforUser(req, res, next) {
         })
     ;
 }
-
+// TODO: Setup nodemon
+// TODO: ReadMe
+// TODO: Diagnostics
+// TODO: Make it DRY, abstract sql
 // TODO: check if the user exists before inserting the foreign key
 // TODO: avoid duplicate entries
 // TODO: error handling
-// TODO: Diagnostics
-// TODO: Make it DRY, abstract sql
+//    return db.one('INSERT INTO org(orgID) SELECT $1 FROM (SELECT count(*) AS o FROM org WHERE orgID = $1) o WHERE o.o = 0; SELECT id FROM org WHERE orgID = $1', orgID);
+
 function addLogforUser(req, res, next) {
     const userid = parseInt(req.params.userid);
 
