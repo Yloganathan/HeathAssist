@@ -56,6 +56,7 @@ function retrieveLogsforUser(req, res, next) {
     ;
 }
 // TODO: Cordova
+// TODO: Need to save time
 // TODO: check if the user exists before inserting the foreign key
 // TODO: avoid duplicate entries
 // TODO: update time
@@ -68,7 +69,7 @@ function addLogforUser(req, res, next) {
  console.log(userid);
  console.log(req.body);
     const data = {
-        date: req.body.time,
+        date: req.body.date,
         weight: req.body.weight || null,
         fatpercent: req.body.fatpercent || null,
         dietnotes: req.body.dietnotes || null,
