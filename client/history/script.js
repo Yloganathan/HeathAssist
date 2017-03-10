@@ -1,3 +1,4 @@
+//TODO: set  today - 30 days as min for chart x axis
 angular.module('historyUpdater', [])
 .controller('chartController', function($scope, $http){
     $scope.historicData = {};

@@ -51,7 +51,7 @@ function retrieveLogsforUser(req, res, next) {
                });
         })
         .catch(function (err) {
-            return next(err);
+           return next(err);
         })
     ;
 }
@@ -65,10 +65,10 @@ function retrieveLogsforUser(req, res, next) {
 // TODO: delete is not working
 function addLogforUser(req, res, next) {
     const userid = parseInt(req.params.userid);
-
+ console.log(userid);
+ console.log(req.body);
     const data = {
-        date: req.body.date,
-        time: req.body.time || null,
+        date: req.body.time,
         weight: req.body.weight || null,
         fatpercent: req.body.fatpercent || null,
         dietnotes: req.body.dietnotes || null,
@@ -76,8 +76,8 @@ function addLogforUser(req, res, next) {
     };
 
     db
-        .one('INSERT INTO daily_log(date,time,weight,fatpercent,dietnotes,workoutnotes) values($1, $2, $3, $4, $5, $6) RETURNING id',
-            [data.date, data.time, data.weight, data.fatpercent, data.dietnotes, data.workoutnotes])
+        .one('INSERT INTO daily_log(date,weight,fatpercent,dietnotes,workoutnotes) values($1, $2, $3, $4, $5) RETURNING id',
+            [data.date, data.weight, data.fatpercent, data.dietnotes, data.workoutnotes])
 
         .then(function(result){
             console.log('inserted one'+ result.id);
@@ -94,12 +94,13 @@ function addLogforUser(req, res, next) {
                 })
                 .catch(function(err){
                     console.log('errr' + err);
-                    return next(err);
+                   return next(err);
                 })
             ;
         })
         .catch(function(err){
-            return next(err);
+            console.log('errr' + err);
+           return next(err);
         })
     ;
 }
@@ -118,7 +119,7 @@ function updateLogbyId(req, res, next) {
                });
         })
         .catch(function(err){
-            return next(err);
+           return next(err);
         })
     ;
 }
