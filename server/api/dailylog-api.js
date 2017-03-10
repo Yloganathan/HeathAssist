@@ -55,12 +55,14 @@ function retrieveLogsforUser(req, res, next) {
         })
     ;
 }
-
+// TODO: Cordova
 // TODO: check if the user exists before inserting the foreign key
 // TODO: avoid duplicate entries
+// TODO: update time
 // TODO: error handling
 // TODO: Diagnostics
 // TODO: Make it DRY, abstract sql
+// TODO: delete is not working
 function addLogforUser(req, res, next) {
     const userid = parseInt(req.params.userid);
 
@@ -125,11 +127,11 @@ function deleteLogbyId(req, res, next) {
 
     var id = parseInt(req.params.id);
     db
-        .result('DELETE  from daily_log where id = $1',id)
+        .result('DELETE from user_log WHERE dailylog = $1',id)
         .then(function () {
             console.log('Delete daily log');
             db
-                .result('DELETE from user_log WHERE dailylog = $1',id)
+                .result('DELETE  from daily_log where id = $1',id)
                 .then(function(){
                     console.log('Delete user log');
                     res.status(200)
