@@ -1,4 +1,6 @@
 //TODO:redirect user to history page
+//TODO: time is not saved
+
 angular.module('nodelogform',[])
 .controller('nodelogformController', function($scope, $location, $http) {
     $scope.formData = {};
