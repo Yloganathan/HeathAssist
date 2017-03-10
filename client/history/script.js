@@ -42,7 +42,7 @@ angular.module('historyUpdater', [])
     $scope.chart.options.data.push(series1);
     $scope.chart.options.data.push(series2);
 
-    $http.get('/api/v1/logs/3')
+    $http.get('/api/v1/logs/1')
          .success((result) => {
              console.log(result.data);
              $scope.historicData = result.data;

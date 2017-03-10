@@ -7,7 +7,7 @@ angular.module('nodelogform',[])
    // $scope.formData.weight = 90;
     $scope.createLog = () => {
         console.log($scope.formData);
-        $http.post('/api/v1/log/3', $scope.formData)
+        $http.post('/api/v1/log/1', $scope.formData)
              .success((data) => {
                  $scope.formData = {};
                  console.log(data);
