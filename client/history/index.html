@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html ng-app ='historyUpdater' ng-controller ='historyController' ng-init='historyController.load()'>
+<html ng-app ='historyUpdater' >
 <head>
   <title>History</title>
   <link rel="stylesheet" href="../normalize.css">
@@ -18,7 +18,7 @@
         <li><a class='nav-link'>Exercise <img class='nav-img' src="../images/exercise.png" alt="Daily log icon of a clipboard."></a></li>
       </ul>
     </nav>
-    <div id="chart"></div>
+    <div id="chart" ng-controller ='chartController'></div>
   </main>
   <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="nodelogform">
   <head>
     <meta charset="utf-8">
     <title>Daily Log</title>
@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <meta name='viewport' content='width=device-width, initial-scale=1'>
   </head>
-  <body>
+  <body ng-controller="nodelogformController">
     <header>
       <h1><img id='logo' src="../images/logo.png" alt="Logo image for the daily info.  Resembles a heart-shaped swirl">Be Well</h1>
     </header>
@@ -23,29 +23,29 @@
       <form class="user-data" action="index.html" method="post">
         <p>
           <label class='user-input-label' for='date'>Date</label>
-          <input class='user-input' type='date' name='date'>
+          <input class='user-input' type='date' name='date' ng-model="formData.date">
         </p>
         <p>
           <label class='user-input-label' for='time'>Time</label>
-          <input class='user-input' type='time' name='time'>
+          <input class='user-input' type='time' name='time' ng-model="formData.time">
         </p>
         <p>
           <label class='user-input-label' for='weight'>Weight</label>
-          <input class='user-input' type='number' name='weight'>
+          <input class='user-input' type='number' name='weight' ng-model="formData.weight">
         </p>
         <p>
           <label class='user-input-label' for='fat'>Fat %</label>
-          <input class='user-input' type='number' name='fat'>
+          <input class='user-input' type='number' name='fat' ng-model="formData.fatpercent">
         </p>
         <p>
           <label class='user-input-label' for='food'>Food</label>
-          <input class='user-input' type='text' name='food' placeholder="What did you eat today?">
+          <input class='user-input' type='text' name='food' placeholder="What did you eat today?" ng-model="formData.dietnotes">
         </p>
         <p>
           <label class='user-input-label' for='exercise'>Excercise</label>
-          <input class='user-input' type='text' name='exercise' placeholder="What exercises did you do today?">
+          <input class='user-input' type='text' name='exercise' placeholder="What exercises did you do today?" ng-model="formData.exercise">
         </p>
-        <input id='submit-button' type="submit" name="submit">
+        <input id='submit-button' type="submit" name="submit" ng-click="createLog()">
       </form>
     </main>
   </body>
