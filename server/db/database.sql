@@ -13,7 +13,6 @@ CREATE TABLE user_table(
 CREATE TABLE daily_log (
     ID SERIAL PRIMARY KEY,
     Date DATE,
-    Time TIME,
     Weight INTEGER,
     FatPercent INTEGER,
     DietNotes TEXT,

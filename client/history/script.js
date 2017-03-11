@@ -1,51 +1,67 @@
-window.onload = function () {
-    var chart = new CanvasJS.Chart("chart");
+//TODO: set  today - 30 days as min for chart x axis
+//TODO: set different y axis for fat and weight
+angular.module('historyUpdater', [])
+.controller('chartController', function($scope, $http){
+    $scope.historicData = {};
+    $scope.chart= new CanvasJS.Chart("chart");
 
-    chart.options.title = { text: "History", fontColor: '#177E89', fontFamily: 'Baloo Bhaina' }
-    chart.options.axisX = { labelAngle: 45, labelFontFamily: 'Baloo Bhaina', labelFontWeight: 'lighter', labelFontSize: 30 }
-    chart.options.axisY = { minimum: 14, title: 'weight', labelFontFamily: 'Baloo Bhaina', labelColor: '696869', labelFontSize: 30, labelFontWeight: 'lighter', titleFontFamily: 'Baloo Bhaina', titleFontSize: 36, gridColor: '#D9D9D9', interval: 4 }
-    chart.options.legend = { fontFamily: 'Baloo Bhaina', fontSize: 36, fontWeight: 'lighter', fontColor: '#696869' }
+    $scope.chart.options.title = { text: "History", fontColor: '#177E89', fontFamily: 'Baloo Bhaina' }
+    $scope.chart.options.axisX = {
+        labelAngle: 45,
+        labelFontFamily: 'Baloo Bhaina',
+        labelFontWeight: 'lighter',
+        labelFontSize: 30,
+        valueFormatString: "DD/MM",
+        intervalType: "day",
+        interval: 1}
+    $scope.chart.options.axisY = { minimum: 14, title: 'weight', labelFontFamily: 'Baloo Bhaina', labelColor: '696869', labelFontSize: 30, labelFontWeight: 'lighter', titleFontFamily: 'Baloo Bhaina', titleFontSize: 36, gridColor: '#D9D9D9', interval: 4 }
+    $scope.chart.options.legend = { fontFamily: 'Baloo Bhaina', fontSize: 36, fontWeight: 'lighter', fontColor: '#696869' }
 
-    var series1 = {
+    let series1 = {
         type: "line",
         name: "Weight",
         color: "#177E89",
         markerType: "square",
         markerSize: 15,
         legendMarkerType: "none",
-        showInLegend: true
+        showInLegend: true,
+        dataPoints: []
     };
 
-    var series2 = {
+    let series2 = {
         type: "line",
         name: "Fat %",
         color: "#DB3A34",
         markerType: "circle",
         markerSize: 15,
         legendMarkerType: "none",
-        showInLegend: true
+        showInLegend: true,
+        dataPoints: []
     };
 
-    chart.options.data = [];
-    chart.options.data.push(series1);
-    chart.options.data.push(series2);
+    $scope.chart.options.data = [];
+    $scope.chart.options.data.push(series1);
+    $scope.chart.options.data.push(series2);
 
+    $http.get('/api/v1/logs/1')
+         .success((result) => {
+             console.log(result.data);
+             $scope.historicData = result.data;
+             console.log(result.data.length);
+             for( let i=0; i< result.data.length; i++)
+             {
+                 series1.dataPoints.push({x:format(result.data[i].date),y:parseInt(result.data[i].weight)});
+                 series2.dataPoints.push({x:format(result.data[i].date),y:parseInt(result.data[i].fatpercent)});
+             }
+              $scope.chart.render();
+         })
+         .error((error) => {
+             console.log('Error: ' + error);
+         });
 
-    series1.dataPoints = [
-            { label: "3/1/17", y: 18 },
-            { label: "3/2/17", y: 29 },
-            { label: "3/3/17", y: 40 },
-            { label: "3/4/17", y: 34 },
-            { label: "3/5/17", y: 24 }
-    ];
+    function format (dat){
+        let temp = new Date(dat);
+        return new Date(temp.getFullYear(), temp.getMonth(),  temp.getDate());
+    };
 
-    series2.dataPoints = [
-        { y: 23 },
-        { y: 33 },
-        { y: 48 },
-        { y: 37 },
-        { y: 20 }
-    ];
-
-    chart.render();
-}
+});
