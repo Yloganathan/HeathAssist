@@ -20,5 +20,5 @@ Sparate sections for nutirtion and exercise.
 * Run `psql -f database.sql` to setup the tables.
 
 ### Starting
-Navigate to the projects's root folder: run `npm start` or `DEBUG=express* npm start`
-Go to `localhost:300` in your browser
+* Navigate to the projects's root folder: run `npm start` or `DEBUG=express* npm start`
+* Go to [localhost:3000] in your browser
