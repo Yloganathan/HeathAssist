@@ -21,4 +21,4 @@ Sparate sections for nutirtion and exercise.
 
 ### Starting
 * Navigate to the projects's root folder: run `npm start` or `DEBUG=express* npm start`
-* Go to (localhost:3000) in your browser
+* Go to [localhost:3000](http://localhost:3000) in your browser
