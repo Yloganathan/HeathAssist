@@ -16,16 +16,16 @@ router.get('/', function(req, res, next) {
 router.get('/api/v1/users', userAPI.retrieveUsers);
 
 /* GET one user */
-router.get('/api/v1/users/:id', userAPI.getUser);
+router.get('/api/v1/user/:id', userAPI.getUser);
 
 /* CREATE user */
-router.post('/api/v1/users', userAPI.createUser);
+router.post('/api/v1/user', userAPI.createUser);
 
 /* UPDATE user */
-router.put('/api/v1/users/:id', userAPI.updateUser);
+router.put('/api/v1/user/:id', userAPI.updateUser);
 
 /* DELETE user */
-router.delete('/api/v1/users/:id', userAPI.deleteUser);
+router.delete('/api/v1/user/:id', userAPI.deleteUser);
 
 
 //Daily log CURD operation

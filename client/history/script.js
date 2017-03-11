@@ -1,4 +1,5 @@
 //TODO: set  today - 30 days as min for chart x axis
+//TODO: day is offset by 1 in the chart
 //TODO: set different y axis for fat and weight
 angular.module('historyUpdater', [])
 .controller('chartController', function($scope, $http){
@@ -61,7 +62,7 @@ angular.module('historyUpdater', [])
 
     function format (dat){
         let temp = new Date(dat);
-        return new Date(temp.getFullYear(), temp.getMonth(),  temp.getDate());
+        return new Date(temp.getFullYear(), temp.getMonth(), temp.getDate());
     };
 
 });

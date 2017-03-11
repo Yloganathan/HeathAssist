@@ -6,7 +6,7 @@ const pgp = require('pg-promise')({
 });
 const db = pgp(connectionString);
 
-// generic way to skip NULL/undefined values for strings:
+// Skip NULL/undefined values for strings:
 function str(column) {
     return {
         name: column,
@@ -14,7 +14,7 @@ function str(column) {
     };
 }
 
-// generic way to skip NULL/undefined values for integers,
+// Skip NULL/undefined values for integers,
 // while parsing the type correctly:
 function int(column) {
     return {
@@ -35,12 +35,10 @@ const logFields = new pgp.helpers.ColumnSet([
     ], {table: 'daily_log'}
 );
 
-//TODO: date support -created/updated/date field
 
 function retrieveLogsforUser(req, res, next) {
 
     db
-        //.any('select * from daily_log')
         .any('SELECT daily_log.* FROM user_log INNER JOIN daily_log ON (daily_log.id = user_log.dailylog) WHERE user_log.userId = $1', parseInt(req.params.userid))
         .then(function (data) {
             res.status(200)
@@ -56,18 +54,11 @@ function retrieveLogsforUser(req, res, next) {
     ;
 }
 
-// TODO: Setup nodemon
-// TODO: ReadMe
+
 // TODO: Diagnostics
 // TODO: Make it DRY, abstract sql
+// TODO: error handling (user hitting submit twice)
 // TODO: Cordova
-// TODO: Need to save time
-// TODO: delete is not working
-// TODO: check if the user exists before inserting the foreign key
-// TODO: avoid duplicate entries
-// TODO: update time
-// TODO: error handling
-//    return db.one('INSERT INTO org(orgID) SELECT $1 FROM (SELECT count(*) AS o FROM org WHERE orgID = $1) o WHERE o.o = 0; SELECT id FROM org WHERE orgID = $1', orgID);
 
 function addLogforUser(req, res, next) {
     const userid = parseInt(req.params.userid);
@@ -75,6 +66,7 @@ function addLogforUser(req, res, next) {
  console.log(req.body);
     const data = {
         date: req.body.date,
+        time: req.body.time,
         weight: req.body.weight || null,
         fatpercent: req.body.fatpercent || null,
         dietnotes: req.body.dietnotes || null,
@@ -82,8 +74,8 @@ function addLogforUser(req, res, next) {
     };
 
     db
-        .one('INSERT INTO daily_log(date,weight,fatpercent,dietnotes,workoutnotes) values($1, $2, $3, $4, $5) RETURNING id',
-            [data.date, data.weight, data.fatpercent, data.dietnotes, data.workoutnotes])
+        .one('INSERT INTO daily_log(date, time, weight,fatpercent,dietnotes,workoutnotes) values($1, $2, $3, $4, $5, $6) RETURNING id',
+            [data.date, data.time, data.weight, data.fatpercent, data.dietnotes, data.workoutnotes])
 
         .then(function(result){
             console.log('inserted one'+ result.id);
@@ -112,7 +104,7 @@ function addLogforUser(req, res, next) {
 }
 
 function updateLogbyId(req, res, next) {
-    var update = pgp.helpers.update(req.body, logFields) + ' WHERE id = ' +
+    var update = pgp.helpers.update(req.body, logFields) + 'UpdatedAt=now() WHERE id = ' +
         parseInt(req.params.id);
 
     db
@@ -133,12 +125,13 @@ function updateLogbyId(req, res, next) {
 function deleteLogbyId(req, res, next) {
 
     var id = parseInt(req.params.id);
+    console.log('entering delete');
     db
-        .result('DELETE from user_log WHERE dailylog = $1',id)
+        .none('DELETE from user_log WHERE dailylog = $1',id)
         .then(function () {
             console.log('Delete daily log');
             db
-                .result('DELETE  from daily_log where id = $1',id)
+                .none('DELETE  from daily_log where id = $1',id)
                 .then(function(){
                     console.log('Delete user log');
                     res.status(200)

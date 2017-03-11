@@ -46,18 +46,35 @@ function getUser(req, res, next) {
 function createUser(req, res, next) {
 
     const data = {name: req.body.name, email: req.body.email};
-
     db
-        .none('INSERT INTO user_table(name, email) values($1, $2)',
-            [data.name, data.email])
-        .then(function(){
-            res.status(200)
-                .json({
-                    status: 'success',
-                    message: 'created user'
-                });
+        .result('SELECT * FROM user_table WHERE email = $1',data.email)
+        .then(function(result){
+            console.log(result);
+            if(result.rowCount == 0) {
+                db
+                    .none('INSERT INTO user_table(name, email) values($1, $2)',
+                        [data.name, data.email])
+                    .then(function () {
+                        res.status(200)
+                           .json({
+                               status : 'success',
+                               message: 'created user'
+                           });
+                    })
+                    .catch(function (err) {
+                        return next(err);
+                    })
+                ;
+            }
+            else {
+                res.status(200)
+                   .json({
+                       status : 'success',
+                       message: 'existing user'
+                   });
+            }
         })
-        .catch(function(err){
+        .catch(function (err) {
             return next(err);
         })
     ;
