@@ -3,7 +3,7 @@ This is a simple web app implementation of a health and wellness app that lets y
 in an easy form and view the historic data in a line graph.
 
 * Yet to Come
-Sparate sections for nutirtion and exercise.
+Sparate sections for nutrition and exercise.
 
 ### Prerequisites
 * Node.js version 4.x or later
